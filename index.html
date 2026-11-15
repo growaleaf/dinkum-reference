@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dinkum Fish &amp; Bug Sell-Price Reference</title>
+<style>
+  :root{
+    --bg:#15181d;
+    --panel:#1c2026;
+    --panel-2:#20252c;
+    --border:#2e343c;
+    --text:#dde2e8;
+    --text-dim:#8a929d;
+    --accent:#4f9b6a;
+    --common:#8a929d;
+    --uncommon:#4878a8;
+    --rare:#9a5fc2;
+    --veryrare:#c2793c;
+    --superrare:#c2a23c;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.45;
+  }
+  header{
+    padding:20px 24px 16px;
+    border-bottom:1px solid var(--border);
+  }
+  header h1{
+    margin:0 0 6px;
+    font-size:21px;
+  }
+  header p{
+    margin:0 0 4px;
+    color:var(--text-dim);
+    font-size:14px;
+    max-width:820px;
+  }
+  nav.tabs{
+    display:flex;
+    gap:8px;
+    padding:14px 24px 0;
+    border-bottom:1px solid var(--border);
+    background:var(--panel);
+    flex-wrap:wrap;
+  }
+  nav.tabs .tab{
+    padding:10px 16px;
+    font-size:13.5px;
+    color:var(--text-dim);
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    user-select:none;
+  }
+  nav.tabs .tab.active{
+    color:var(--text);
+    border-bottom-color:var(--accent);
+  }
+  section{ display:none; }
+  section.active{ display:block; }
+  .controls{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    padding:16px 24px;
+    border-bottom:1px solid var(--border);
+    background:var(--panel);
+    align-items:center;
+  }
+  input[type="search"], input[type="number"]{
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:8px 10px;
+    border-radius:6px;
+    font-size:14px;
+  }
+  input[type="search"]{
+    flex:1;
+    min-width:200px;
+  }
+  select{
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:8px 10px;
+    border-radius:6px;
+    font-size:14px;
+  }
+  .table-wrap{
+    padding:16px 24px 50px;
+    overflow-x:auto;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+  }
+  th, td{
+    text-align:left;
+    padding:8px 10px;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    color:var(--text-dim);
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    cursor:pointer;
+    user-select:none;
+  }
+  th.sortable:hover{ color:var(--text); }
+  th .arrow{ font-size:10px; opacity:0.6; }
+  tbody tr:hover{
+    background:var(--panel);
+  }
+  .badge{
+    display:inline-block;
+    font-size:11px;
+    padding:2px 7px;
+    border-radius:4px;
+    border:1px solid currentColor;
+    white-space:nowrap;
+  }
+  .badge.Common{ color:var(--common); }
+  .badge.Uncommon{ color:var(--uncommon); }
+  .badge.Rare{ color:var(--rare); }
+  .badge.Very-Rare{ color:var(--veryrare); }
+  .badge.Super-Rare{ color:var(--superrare); }
+  .badge.unknown{ color:var(--text-dim); }
+  .src-link{
+    color:var(--text-dim);
+    font-size:11px;
+  }
+  .src-link a{ color:var(--text-dim); }
+  .cell-note{
+    font-size:11.5px;
+    color:var(--text-dim);
+    margin-top:4px;
+  }
+  .snapshot-note{
+    font-size:12px;
+    color:var(--text-dim);
+    border-left:3px solid var(--border);
+    padding-left:10px;
+    margin:10px 24px;
+    max-width:820px;
+  }
+  .snapshot-note.warn{
+    border-left-color:var(--accent);
+  }
+  footer.sources{
+    padding:16px 24px 60px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-dim);
+  }
+  footer.sources a{ color:var(--text-dim); }
+  footer.sources li{ margin-bottom:6px; }
+  .not-published{ color:var(--text-dim); font-style:italic; }
+  .haul-table input[type="number"]{
+    width:70px;
+  }
+  .haul-total{
+    padding:14px 24px;
+    background:var(--panel-2);
+    border-bottom:1px solid var(--border);
+    font-size:15px;
+  }
+  .haul-total b{ color:var(--accent); }
+  .top-seller{ color:var(--accent); font-weight:600; }
+  .fan-ref-note{
+    font-size:12px;
+    color:var(--text-dim);
+    padding:10px 24px 0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Dinkum Fish &amp; Bug Sell-Price Reference</h1>
+  <p>Unofficial fan reference, not affiliated with or endorsed by James Bendon / Dinkum. Holding a bag of fish and bugs and deciding what's worth selling to John versus keeping for the Pedia? Filter by biome, season, and time of day, or plug in your haul below to see what it's worth.</p>
+</header>
+
+<div class="snapshot-note warn" id="site-note"></div>
+
+<nav class="tabs">
+  <div class="tab active" data-section="fish">Fish (45)</div>
+  <div class="tab" data-section="bugs">Bugs (50)</div>
+  <div class="tab" data-section="haul">Haul Calculator</div>
+</nav>
+
+<section id="fish" class="active">
+  <div class="controls">
+    <input type="search" id="fish-search" placeholder="Search fish, biome, season..." />
+    <select id="fish-biome"></select>
+    <select id="fish-season"></select>
+    <select id="fish-time"></select>
+  </div>
+  <div class="table-wrap">
+    <table id="fish-table">
+      <thead>
+        <tr>
+          <th class="sortable" data-sort="name">Fish</th>
+          <th class="sortable" data-sort="biome">Biome</th>
+          <th class="sortable" data-sort="season">Season</th>
+          <th class="sortable" data-sort="time">Time</th>
+          <th class="sortable" data-sort="rarity">Rarity</th>
+          <th class="sortable" data-sort="sellPrice">Sell Price</th>
+        </tr>
+      </thead>
+      <tbody id="fish-rows"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="bugs">
+  <div class="controls">
+    <input type="search" id="bug-search" placeholder="Search bugs, biome, season..." />
+    <select id="bug-biome"></select>
+    <select id="bug-season"></select>
+    <select id="bug-time"></select>
+  </div>
+  <div class="table-wrap">
+    <table id="bug-table">
+      <thead>
+        <tr>
+          <th class="sortable" data-sort="name">Bug</th>
+          <th class="sortable" data-sort="biome">Biome</th>
+          <th class="sortable" data-sort="season">Season</th>
+          <th class="sortable" data-sort="time">Time</th>
+          <th class="sortable" data-sort="rarity">Rarity</th>
+          <th class="sortable" data-sort="sellPrice">Sell Price</th>
+        </tr>
+      </thead>
+      <tbody id="bug-rows"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="haul">
+  <div class="fan-ref-note">Enter how many of each critter are in your bag. The total updates live, and the three highest-value rows in your haul are highlighted.</div>
+  <div class="haul-total" id="haul-total">Total: 0 Dinks</div>
+  <div class="table-wrap">
+    <table class="haul-table">
+      <thead>
+        <tr>
+          <th>Critter</th>
+          <th>Type</th>
+          <th>Sell Price (each)</th>
+          <th>Count</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody id="haul-rows"></tbody>
+    </table>
+  </div>
+</section>
+
+<footer class="sources">
+  Sources &amp; caveats:
+  <ul>
+    <li>Fish table (45 rows: biome, time of day, season, rarity, sell price) — <a href="https://bloxodes.com/wiki/dinkum/fish" target="_blank" rel="noopener">Bloxodes, fetched 2026-11-15</a>.</li>
+    <li>Bug table (50 rows: biome, time of day, season, rarity, sell price) — <a href="https://bloxodes.com/wiki/dinkum/bugs" target="_blank" rel="noopener">Bloxodes, fetched 2026-11-15</a>.</li>
+  </ul>
+  <div id="unused-note"></div>
+  <div style="margin-top:8px;">Every row above is single-source (Bloxodes) — no second independent source for Dinkum fish/bug sell prices was found. Three fish (Macquarie Perch, Spotted Handfish, Lungfish) had no rarity tier listed on the source page; shown here as "not published" rather than guessed.</div>
+  <div style="margin-top:8px;">This is an unofficial fan reference. It is not affiliated with, endorsed by, or certified by James Bendon or the makers of Dinkum. Prices reflect the source snapshot above and may differ from your current game version.</div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+  const rarityClass = r => r === "not published" ? "unknown" : r.replace(/\s+/g, "-");
+
+  function populateSelect(el, values, allLabel) {
+    el.innerHTML = "";
+    const optAll = document.createElement("option");
+    optAll.value = "All";
+    optAll.textContent = allLabel;
+    el.appendChild(optAll);
+    for (const v of values) {
+      const opt = document.createElement("option");
+      opt.value = v;
+      opt.textContent = v;
+      el.appendChild(opt);
+    }
+  }
+
+  function matchesSearch(row, q) {
+    if (!q) return true;
+    q = q.toLowerCase();
+    return row.name.toLowerCase().includes(q) ||
+      row.biome.join(" ").toLowerCase().includes(q) ||
+      row.season.join(" ").toLowerCase().includes(q) ||
+      row.time.join(" ").toLowerCase().includes(q);
+  }
+
+  function makeTableController(opts) {
+    const { list, searchEl, biomeEl, seasonEl, timeEl, rowsEl } = opts;
+    let sortKey = "name";
+    let sortDir = 1;
+
+    populateSelect(biomeEl, allBiomes(list), "All Biomes");
+    populateSelect(seasonEl, allSeasons(list), "All Seasons");
+    populateSelect(timeEl, allTimes(list), "All Times");
+
+    function sortValue(row, key) {
+      if (key === "sellPrice") return row.sellPrice;
+      if (key === "biome" || key === "season" || key === "time") return row[key].join(", ");
+      return row[key];
+    }
+
+    function render() {
+      const q = searchEl.value.trim();
+      const biome = biomeEl.value;
+      const season = seasonEl.value;
+      const time = timeEl.value;
+      let filtered = list.filter(row =>
+        (biome === "All" || row.biome.includes(biome)) &&
+        (season === "All" || row.season.includes(season)) &&
+        (time === "All" || row.time.includes(time)) &&
+        matchesSearch(row, q)
+      );
+      filtered = filtered.slice().sort((a, b) => {
+        const av = sortValue(a, sortKey);
+        const bv = sortValue(b, sortKey);
+        if (typeof av === "number" && typeof bv === "number") return (av - bv) * sortDir;
+        return String(av).localeCompare(String(bv)) * sortDir;
+      });
+      rowsEl.innerHTML = "";
+      for (const row of filtered) {
+        const tr = document.createElement("tr");
+        const rarityHtml = row.rarity === "not published"
+          ? '<span class="not-published">not published</span>'
+          : `<span class="badge ${rarityClass(row.rarity)}">${row.rarity}</span>`;
+        tr.innerHTML = `
+          <td>${row.name}</td>
+          <td>${row.biome.join(", ")}</td>
+          <td>${row.season.join(", ")}</td>
+          <td>${row.time.join(", ")}</td>
+          <td>${rarityHtml}</td>
+          <td>${row.sellPrice} Dinks<div class="cell-note">src: Bloxodes</div></td>
+        `;
+        rowsEl.appendChild(tr);
+      }
+    }
+
+    searchEl.addEventListener("input", render);
+    biomeEl.addEventListener("change", render);
+    seasonEl.addEventListener("change", render);
+    timeEl.addEventListener("change", render);
+
+    const table = rowsEl.closest("table");
+    table.querySelectorAll("th.sortable").forEach(th => {
+      th.addEventListener("click", () => {
+        const key = th.dataset.sort;
+        if (sortKey === key) {
+          sortDir = -sortDir;
+        } else {
+          sortKey = key;
+          sortDir = 1;
+        }
+        table.querySelectorAll("th.sortable .arrow").forEach(a => a.remove());
+        const arrow = document.createElement("span");
+        arrow.className = "arrow";
+        arrow.textContent = sortDir === 1 ? "▲" : "▼";
+        th.appendChild(arrow);
+        render();
+      });
+    });
+
+    return render;
+  }
+
+  const renderFish = makeTableController({
+    list: FISH,
+    searchEl: document.getElementById("fish-search"),
+    biomeEl: document.getElementById("fish-biome"),
+    seasonEl: document.getElementById("fish-season"),
+    timeEl: document.getElementById("fish-time"),
+    rowsEl: document.getElementById("fish-rows"),
+  });
+
+  const renderBugs = makeTableController({
+    list: BUGS,
+    searchEl: document.getElementById("bug-search"),
+    biomeEl: document.getElementById("bug-biome"),
+    seasonEl: document.getElementById("bug-season"),
+    timeEl: document.getElementById("bug-time"),
+    rowsEl: document.getElementById("bug-rows"),
+  });
+
+  // ---- Haul calculator ----
+  const haulRowsEl = document.getElementById("haul-rows");
+  const haulTotalEl = document.getElementById("haul-total");
+  const ALL_CRITTERS = [
+    ...FISH.map(f => ({ ...f, kind: "Fish" })),
+    ...BUGS.map(b => ({ ...b, kind: "Bug" })),
+  ].sort((a, b) => b.sellPrice - a.sellPrice);
+
+  const counts = {};
+
+  function renderHaul() {
+    haulRowsEl.innerHTML = "";
+    let total = 0;
+    const subtotals = ALL_CRITTERS.map(c => {
+      const count = counts[c.name] || 0;
+      const subtotal = count * c.sellPrice;
+      total += subtotal;
+      return { c, count, subtotal };
+    });
+    const topThreshold = subtotals
+      .map(s => s.subtotal)
+      .filter(v => v > 0)
+      .sort((a, b) => b - a)[2] || Infinity;
+
+    for (const { c, count, subtotal } of subtotals) {
+      const tr = document.createElement("tr");
+      const isTop = subtotal > 0 && subtotal >= topThreshold;
+      tr.innerHTML = `
+        <td class="${isTop ? "top-seller" : ""}">${c.name}</td>
+        <td>${c.kind}</td>
+        <td>${c.sellPrice} Dinks</td>
+        <td><input type="number" min="0" step="1" value="${count}" data-critter="${c.name}" /></td>
+        <td class="${isTop ? "top-seller" : ""}">${subtotal} Dinks</td>
+      `;
+      haulRowsEl.appendChild(tr);
+    }
+    haulTotalEl.innerHTML = `Total: <b>${total}</b> Dinks across ${subtotals.filter(s => s.count > 0).length} critter type(s)`;
+  }
+
+  haulRowsEl.addEventListener("input", e => {
+    const input = e.target;
+    if (input.dataset.critter) {
+      const v = parseInt(input.value, 10);
+      counts[input.dataset.critter] = isNaN(v) || v < 0 ? 0 : v;
+      renderHaul();
+      const refocus = haulRowsEl.querySelector(`input[data-critter="${CSS.escape(input.dataset.critter)}"]`);
+      if (refocus) { refocus.focus(); refocus.select(); }
+    }
+  });
+
+  document.getElementById("site-note").textContent =
+    "Snapshot fetched 2026-11-15 from Bloxodes (bloxodes.com/wiki/dinkum/fish, bloxodes.com/wiki/dinkum/bugs). Sell prices reflect the base rate shown there — in-game events, shop discounts, or patches may change actual prices.";
+  document.getElementById("unused-note").textContent = UNUSED_CANDIDATE_NOTE;
+
+  const tabs = document.querySelectorAll(".tab");
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+      document.getElementById(tab.dataset.section).classList.add("active");
+    });
+  });
+
+  renderFish();
+  renderBugs();
+  renderHaul();
+</script>
+
+</body>
+</html>
